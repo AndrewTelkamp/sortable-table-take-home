@@ -1,0 +1,10 @@
+.tableContainer {
+  overflow-x: scroll;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.tableContainer .table {
+  border-collapse: collapse;
+  width: 100%;
+}

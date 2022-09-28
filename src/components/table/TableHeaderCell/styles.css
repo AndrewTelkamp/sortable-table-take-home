@@ -1,0 +1,30 @@
+.headerCell {
+  color: #6c6c72;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 12px;
+  padding: 0 16px;
+  text-align: left;
+  user-select: none; /* TODO: what browsers do we support? */
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.headerCell:focus,
+.headerCell:hover {
+  background-color: #fff;
+}
+
+.headerCell .content {
+  align-items: center;
+  display: flex;
+  line-height: 12px;
+}
+
+.headerCell .sortIcon {
+  color: #919197;
+  height: 16px;
+  margin-left: 4px;
+  width: 16px;
+}
