@@ -11,7 +11,7 @@ interface Props {
   onPageSizeChange: (number: number) => any;
   page: number;
   pageCount: number;
-  pageSize: number;
+  pageSize?: number;
   pageSizeOptions?: number[];
 }
 
@@ -20,7 +20,7 @@ const Pagination = ({
   onPageSizeChange,
   page,
   pageCount,
-  pageSize,
+  pageSize = 10,
   pageSizeOptions = [10, 20, 50, 100],
 }: Props) => {
   const handleFirstPageClick = () => {
@@ -104,4 +104,5 @@ const Pagination = ({
   );
 };
 
+export { Pagination };
 export default memo(Pagination);
