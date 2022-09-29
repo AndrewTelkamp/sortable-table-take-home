@@ -1,13 +1,13 @@
-import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { render, screen } from '@testing-library/react';
 
 import Pagination from '.';
 
 enum Label {
   FIRST_BTN = 'Navigate to first page',
-  PREV_BTN = 'Navigate to previous page',
-  NEXT_BTN = 'Navigate to next page',
   LAST_BTN = 'Navigate to last page',
+  NEXT_BTN = 'Navigate to next page',
+  PREV_BTN = 'Navigate to previous page',
 }
 
 const defaultProps = {
