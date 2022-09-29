@@ -55,12 +55,12 @@ const SortableTable = ({
   useEffect(() => {
     const cellKeys: string[] = headers.map((header) => header.dataKey);
     setCellKeys(cellKeys);
-  }, []);
+  }, [headers]);
 
   return (
     <>
       <Table caption={caption}>
-        <thead style={{ width: '100%' }}>
+        <thead className='tableHead'>
           <TableHeaderRow>
             {headers.map((header) => (
               <TableHeaderCell
@@ -82,8 +82,8 @@ const SortableTable = ({
           {/* @ts-ignore */}
           <UIState
             colSpan={headers.length}
-            errorState={errorState}
             emptyState={emptyState}
+            errorState={errorState}
             loadState={loadState}
             fetchStatus={fetchStatus}
             isData={!!data.length}
@@ -105,12 +105,12 @@ const SortableTable = ({
       </Table>
 
       <Pagination
-        page={page}
-        pageSize={pageSize}
         onPageChange={onPageChange}
         onPageSizeChange={onPageSizeChange}
-        pageSizeOptions={pageSizeOptions}
+        page={page}
         pageCount={totalPageCount}
+        pageSize={pageSize}
+        pageSizeOptions={pageSizeOptions}
       />
     </>
   );
