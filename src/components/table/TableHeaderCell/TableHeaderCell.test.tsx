@@ -1,7 +1,7 @@
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 
-import TableHeaderCell from '.';
+import TableHeaderCell, { IconColor, SortIcon } from '.';
 
 const defaultProps = {
   dataKey: 'id',
@@ -52,9 +52,13 @@ describe('TableHeaderCell', () => {
     });
 
     const cell = screen.getByRole('columnheader');
+    const sortIcon = screen.getByTestId('sortIcon');
 
     expect(cell).toHaveAttribute('colSpan', props.colSpan.toString());
     expect(cell).toHaveAttribute('rowSpan', props.rowSpan.toString());
+
+    expect(sortIcon).toBeInTheDocument();
+    expect(sortIcon).toHaveAttribute('aria-hidden', 'true');
 
     await userEvent.tab();
     expect(cell).not.toHaveFocus();
@@ -67,19 +71,12 @@ describe('TableHeaderCell', () => {
 
     const cell = screen.getByRole('columnheader');
     const sortIcon = screen.getByTestId('sortIcon');
-    const ascendingArrow = screen.queryByText('ArrowUp.svg');
-    const descendingArrow = screen.queryByText('ArrowDown.svg');
 
     expect(cell).toBeVisible();
     expect(cell).toHaveAttribute('aria-sort', 'ascending');
 
     expect(sortIcon).toBeInTheDocument();
     expect(sortIcon).toHaveAttribute('aria-hidden', 'true');
-
-    expect(ascendingArrow).toBeVisible();
-    expect(ascendingArrow).toHaveAttribute('fill', '#919197');
-
-    expect(descendingArrow).not.toBeInTheDocument();
   });
 
   test('renders correctly when sort direction descending', () => {
@@ -89,19 +86,12 @@ describe('TableHeaderCell', () => {
 
     const cell = screen.getByRole('columnheader');
     const sortIcon = screen.getByTestId('sortIcon');
-    const ascendingArrow = screen.queryByText('ArrowUp.svg');
-    const descendingArrow = screen.queryByText('ArrowDown.svg');
 
     expect(cell).toBeVisible();
     expect(cell).toHaveAttribute('aria-sort', 'descending');
 
     expect(sortIcon).toBeVisible();
     expect(sortIcon).toHaveAttribute('aria-hidden', 'true');
-
-    expect(descendingArrow).toBeVisible();
-    expect(descendingArrow).toHaveAttribute('fill', '#919197');
-
-    expect(ascendingArrow).not.toBeInTheDocument();
   });
 
   test('is accessible and handles accessible clicks', async () => {
@@ -140,6 +130,55 @@ describe('TableHeaderCell', () => {
       dataKey: defaultProps.dataKey,
       direction: 'descending',
       title: defaultProps.title,
+    });
+  });
+
+  describe('SortIcon', () => {
+    test('renders correctly by default', () => {
+      render(<SortIcon />);
+      const ascendingIcon = screen.queryByText('ArrowUp.svg');
+      const descendingIcon = screen.queryByText('ArrowDown.svg');
+      const previewIcon = screen.queryByText('Sort.svg');
+
+      expect(ascendingIcon).not.toBeInTheDocument();
+      expect(descendingIcon).not.toBeInTheDocument();
+      expect(previewIcon).not.toBeInTheDocument();
+    });
+
+    test('renders preview correctly', () => {
+      render(<SortIcon isPreviewVisible />);
+      const ascendingIcon = screen.queryByText('ArrowUp.svg');
+      const descendingIcon = screen.queryByText('ArrowDown.svg');
+      const previewIcon = screen.queryByText('Sort.svg');
+
+      expect(ascendingIcon).not.toBeInTheDocument();
+      expect(descendingIcon).not.toBeInTheDocument();
+      expect(previewIcon).toBeVisible();
+      expect(previewIcon).toHaveAttribute('fill', IconColor.PREVIEW);
+    });
+
+    test('renders ascending correctly', () => {
+      render(<SortIcon isPreviewVisible={false} direction='ascending' />);
+      const ascendingIcon = screen.queryByText('ArrowUp.svg');
+      const descendingIcon = screen.queryByText('ArrowDown.svg');
+      const previewIcon = screen.queryByText('Sort.svg');
+
+      expect(ascendingIcon).toBeVisible();
+      expect(ascendingIcon).toHaveAttribute('fill', IconColor.SORTED);
+      expect(descendingIcon).not.toBeInTheDocument();
+      expect(previewIcon).not.toBeInTheDocument();
+    });
+
+    test('renders descending correctly', () => {
+      render(<SortIcon isPreviewVisible direction='descending' />);
+      const ascendingIcon = screen.queryByText('ArrowUp.svg');
+      const descendingIcon = screen.queryByText('ArrowDown.svg');
+      const previewIcon = screen.queryByText('Sort.svg');
+
+      expect(ascendingIcon).not.toBeInTheDocument();
+      expect(descendingIcon).toBeVisible();
+      expect(descendingIcon).toHaveAttribute('fill', IconColor.SORTED);
+      expect(previewIcon).not.toBeInTheDocument();
     });
   });
 });

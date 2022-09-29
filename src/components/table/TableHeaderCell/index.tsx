@@ -1,8 +1,13 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
 
 import Icon from '../../Icon';
 
 import './styles.css';
+
+enum IconColor {
+  SORTED = '#6c6c72',
+  PREVIEW = '#919197',
+}
 
 type SortDirection = 'ascending' | 'descending' | undefined;
 
@@ -22,6 +27,11 @@ interface Props {
   title: string;
 }
 
+interface SortIconProps {
+  isPreviewVisible?: boolean;
+  direction?: 'ascending' | 'descending';
+}
+
 const TableHeaderCell = ({
   colSpan = 1,
   dataKey,
@@ -31,6 +41,9 @@ const TableHeaderCell = ({
   tabIndex = 0,
   title,
 }: Props) => {
+  const [isFocused, setIsFocused] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
   const handleClick = () => {
     onClick({
       dataKey,
@@ -50,7 +63,11 @@ const TableHeaderCell = ({
       aria-sort={sortDirection}
       className='headerCell'
       colSpan={colSpan}
+      onBlur={() => setIsFocused(false)}
       onClick={handleClick}
+      onMouseOver={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onFocus={() => setIsFocused(true)}
       onKeyPress={handleKeyPress}
       role={'columnheader'}
       rowSpan={rowSpan}
@@ -60,18 +77,36 @@ const TableHeaderCell = ({
       <div className='content'>
         {title}
 
-        {sortDirection && (
-          <span aria-hidden className='sortIcon' data-testid='sortIcon'>
-            <Icon
-              fill='#919197'
-              name={sortDirection === 'ascending' ? 'arrowUp' : 'arrowDown'}
-            />
-          </span>
-        )}
+        <span aria-hidden className='sortIcon' data-testid='sortIcon'>
+          <SortIcon
+            direction={sortDirection}
+            isPreviewVisible={isFocused || isHovered}
+          />
+        </span>
       </div>
     </th>
   );
 };
 
+const SortIcon = ({
+  direction,
+  isPreviewVisible = false,
+}: SortIconProps): JSX.Element | null => {
+  if (direction === 'ascending') {
+    return <Icon fill={IconColor.SORTED} name='arrowUp' />;
+  }
+
+  if (direction === 'descending') {
+    return <Icon fill={IconColor.SORTED} name='arrowDown' />;
+  }
+
+  if (isPreviewVisible) {
+    return <Icon fill={IconColor.PREVIEW} name='sort' />;
+  }
+
+  return null;
+};
+
 export type { SortArgs, SortDirection };
+export { IconColor, SortIcon };
 export default memo(TableHeaderCell);
