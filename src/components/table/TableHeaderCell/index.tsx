@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import Icon from '../../Icon';
 
 import './styles.css';
@@ -72,4 +74,4 @@ const TableHeaderCell = ({
 };
 
 export type { SortArgs, SortDirection };
-export { TableHeaderCell as default };
+export default memo(TableHeaderCell);

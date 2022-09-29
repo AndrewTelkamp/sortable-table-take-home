@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { TableCell } from '.';
+import TableCell from '.';
 
 describe('Table', () => {
   const tr = document.createElement('tr');

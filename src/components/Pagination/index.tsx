@@ -104,5 +104,4 @@ const Pagination = ({
   );
 };
 
-export { Pagination };
 export default memo(Pagination);

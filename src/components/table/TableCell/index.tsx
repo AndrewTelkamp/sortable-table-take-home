@@ -28,5 +28,4 @@ const TableCell = ({
   );
 };
 
-export { TableCell };
 export default memo(TableCell);
