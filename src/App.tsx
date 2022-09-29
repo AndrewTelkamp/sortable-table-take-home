@@ -94,8 +94,10 @@ const App = () => {
     }
   };
 
+  // eslint-disable-next-line
   const debouncedSearchCities = useCallback(
     debounce((args: SearchArgs) => searchCities(args), 150),
+    // eslint-disable-next-line
     []
   );
 
@@ -108,7 +110,8 @@ const App = () => {
       searchTerm: searchValue,
       sortDirection: sortOptions.direction,
     });
-  }, [searchValue]);
+    // eslint-disable-next-line
+  }, [debouncedSearchCities, searchValue]);
 
   useEffect(() => {
     searchCities({
@@ -118,6 +121,7 @@ const App = () => {
       searchTerm: searchValue,
       sortDirection: sortOptions.direction,
     });
+    // eslint-disable-next-line
   }, [page, pageSize, sortOptions.dataKey, sortOptions.direction]);
 
   return (
